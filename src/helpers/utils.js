@@ -30,7 +30,7 @@ export function parseLanguagesJSON(data: languageQuery) {
             if (language.node.name in languages) {
                 languages[language.node.name].bytes += language.size;
             } else {
-                languages[language.node.name] = {bytes:language.size, color:language.node.color};
+                languages[language.node.name] = {bytes:language.size, color:language.node.color || '#3a1'};
             }
         });
     });
@@ -52,24 +52,30 @@ export function parseLanguagesJSON(data: languageQuery) {
     return parsedLanguages;
 }
 
-export function parseLanguagesSVG(languages: languageJSON) {
+export function parseLanguagesSVG(languages: languageJSON, background: string) {
     let languagesArray = [];
-    let top = 10;
-    for (const languageKey in languages) {
+    const sortedLanguages = Object.keys(languages).filter(language=> language !== 'totalBytes').sort((a,b) => {
+        //$FlowFixMe
+        return languages[b].bytes - languages[a].bytes;
+    });
+    let top = 25;
+    for (const languageKey of sortedLanguages) {
         if (Object.prototype.hasOwnProperty.call(languages, languageKey) && languageKey !== 'totalBytes') {
             const language = languages[languageKey];
-            languagesArray.push(`<g transform="translate(10,${top})">
-            <text xml:space="preserve" text-anchor="center" font-family="Helvetica, Arial, sans-serif" font-size="12" id="svg_2" y="0" x="0" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">${languageKey}</text>
-                <rect id="svg_3" height="10" width="${language.percent}%" y="3" x="0" stroke-opacity="null" fill="${language.color}"/>
-                <text xml:space="preserve" text-anchor="center" font-family="Helvetica, Arial, sans-serif" font-size="10" id="svg_4" y="10" x="${language.percent + 1}%" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">${language.percent}%</text>
+            languagesArray.push(`<g transform="translate(25,${top})" fill="none">
+            <text xml:space="preserve" text-anchor="center" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji" font-size="12" id="svg_2" y="0" x="0" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">${languageKey}</text>
+            <svg height="10" width="200" y="3" x="0" fill="#ccc">
+                <rect id="svg_3" height="10" width="100%" y="0" x="0" stroke-opacity="null" fill="#ddd"/>
+                <rect id="svg_3" height="10" width="${language.percent< 5 ? language.percent+1 : language.percent}%" y="0" x="0" stroke-opacity="null" fill="${language.color}"/>
+            </svg>
+            <text xml:space="preserve" text-anchor="center" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji" font-size="10" id="svg_4" y="11" x="205" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">${language.percent}%</text>
             </g>`);
             top += 30;
         }
     }
-    let svg = `<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
-    <g>
-${languagesArray.join('')}
-    </g>
+    let svg = `<svg width="300" height="${(30 * languagesArray.length) + 30}" xmlns="http://www.w3.org/2000/svg" >
+        ${background && `<rect id="svg_3" height="100%" width="100%" y="0" x="0" stroke-opacity="null" fill="${background}"/>`}
+        ${languagesArray.join('')}
     </svg>`;
 
     return svg;

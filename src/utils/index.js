@@ -16,4 +16,6 @@ const isValidUser = (userName: string) => githubRegex.test(userName);
 const longCache = 60 * 60 * 24;
 const shortCache = 60 * 60;
 
-export { redisClient, redisExistsAsync, redisGetAsync, isValidUser, longCache, shortCache };
+const colorRegex = new RegExp(/^#[a-f0-9]{3,6}$/i);
+
+export { redisClient, redisExistsAsync, redisGetAsync, isValidUser, longCache, shortCache, colorRegex };

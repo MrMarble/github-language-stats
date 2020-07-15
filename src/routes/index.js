@@ -1,10 +1,10 @@
 // @flow
-import { getRoot, getUserLanguages } from '../controllers';
+import { getRoot, getUserLanguages, notFound } from '../controllers';
 
 import { Router } from 'express';
 
 const router = Router();
-
+router.get('/favicon.ico',notFound);
 router.get('/:username', getUserLanguages);
 router.get('*', getRoot);
 
