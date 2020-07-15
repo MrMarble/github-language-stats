@@ -1,0 +1,29 @@
+{
+  "name": "github-language-stats",
+  "version": "1.0.0",
+  "description": "Express app that returns the programming languages of a github profile",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "build": "rimraf dist && babel src -d dist"
+  },
+  "repository": {
+    "url": "https://github.com/MrMarble/github-language-stats"
+  },
+  "keywords": [],
+  "author": "MrMarble",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.1.3",
+    "express-slow-down": "^1.3.1",
+    "node-fetch": "^2.6.0",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.4",
+    "rimraf": "^3.0.2"
+  }
+}

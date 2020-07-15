@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  app:
+    container_name: github_stats
+    restart: always
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    links:
+      - redis
+    environment: 
+      - "GITHUB_TOKEN=${GITHUB_TOKEN}"
+  redis:
+    container_name: redis
+    image: redis:6.0-alpine
