@@ -2,6 +2,7 @@
 
 import { ErrorHandler } from '../helpers/error';
 import fetch from 'node-fetch';
+import { parseLanguagesJSON } from '../helpers/utils';
 
 const GITHUB_API = 'https://api.github.com/graphql';
 
@@ -29,6 +30,7 @@ const queryLanguages = `query($userName:String!, $repoCount: Int!) {
               size
               node {
                 name
+                color
               }
             }
           }
@@ -36,58 +38,6 @@ const queryLanguages = `query($userName:String!, $repoCount: Int!) {
       }
     }
   }`;
-
-type LanguageQuery = {
-    data: {
-        user: {
-            repositories: {
-                nodes: [
-                    {
-                        languages: {
-                            edges: [
-                                {
-                                    size: number,
-                                    node: {
-                                        name: string,
-                                    },
-                                }
-                            ],
-                        },
-                    }
-                ],
-            },
-        },
-    },
-};
-
-function parseLanguagesJSON(data: LanguageQuery) {
-    let languages: {[language: string]: number} = {};
-    let parsedLanguages: {[language: string]: {bytes: number,percent: number}, totalBytes: number} = {};
-
-    data.data.user.repositories.nodes.forEach((repo) => {
-        repo.languages.edges.forEach((language) => {
-            if (language.node.name in languages) {
-                languages[language.node.name] += language.size;
-            } else {
-                languages[language.node.name] = language.size;
-            }
-        });
-    });
-
-    let totalBytes = 0;
-    Object.keys(languages).forEach(language => {
-        totalBytes += languages[language];
-    });
-
-    Object.keys(languages).forEach((language) => {
-        parsedLanguages[language] = {
-            bytes: languages[language],
-            percent: Number.parseFloat(((languages[language] * 100) / totalBytes).toFixed(2)),
-        };
-    });
-    parsedLanguages.totalBytes = totalBytes;
-    return parsedLanguages;
-}
 
 export async function getNumRepos(userName: string) {
     const r = await fetch(GITHUB_API, {
