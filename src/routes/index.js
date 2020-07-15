@@ -1,9 +1,11 @@
 // @flow
-import { Router } from "express";
-import { getUserLanguages, getRoot } from "../controllers";
+import { getRoot, getUserLanguages } from '../controllers';
+
+import { Router } from 'express';
+
 const router = Router();
 
-router.get("/:username", getUserLanguages);
-router.get("*", getRoot);
+router.get('/:username', getUserLanguages);
+router.get('*', getRoot);
 
 export default router;

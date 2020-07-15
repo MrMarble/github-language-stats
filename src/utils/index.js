@@ -1,9 +1,9 @@
 // @flow
-import { createClient } from "redis";
-import { promisify } from "util";
+import { createClient } from 'redis';
+import { promisify } from 'util';
 
 const redisClient = createClient({
-  host: "redis",
+    host: 'redis',
 });
 const redisGetAsync = promisify(redisClient.get).bind(redisClient);
 const redisExistsAsync = promisify(redisClient.exists).bind(redisClient);
