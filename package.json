@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/app.js",
     "build": "rimraf dist && babel src -d dist",
-    "flow": "flow"
+    "flow": "flow",
+    "lint": "eslint --color --fix src"
   },
   "repository": {
     "url": "https://github.com/MrMarble/github-language-stats"
@@ -26,6 +27,9 @@
     "@babel/core": "^7.10.5",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
     "@babel/preset-flow": "^7.10.4",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.4.0",
+    "eslint-plugin-flowtype": "^5.2.0",
     "flow-bin": "^0.129.0",
     "rimraf": "^3.0.2"
   }
