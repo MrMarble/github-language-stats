@@ -34,7 +34,11 @@
         ],
         "function-call-argument-newline": ["error", "never"],
         "function-paren-newline": ["error", "never"],
-        "sort-imports":"error"
+        "sort-imports":"error",
+        "multiline-ternary": [
+            "error", 
+            "never"
+        ]
     },
     "settings": {
         "flowtype": {
