@@ -1,15 +1,16 @@
+// @flow
+
 import fetch from "node-fetch";
+import { ErrorHandler } from "../helpers/error";
 
 const GITHUB_API = "https://api.github.com/graphql";
 
-const TOKEN = (() => {
-  if ("GITHUB_TOKEN" in process.env) {
-    return process.env.GITHUB_TOKEN;
-  } else {
-    console.error("You forgot to set the GITHUB_TOKEN variable");
-    process.exit(1);
-  }
-})();
+const TOKEN = process.env.GITHUB_TOKEN || "";
+
+if (TOKEN == "") {
+  console.error("You forgot to set the GITHUB_TOKEN variable");
+  process.exit(1);
+}
 
 const queryNumRepos = `query($userName:String!) {
     user(login: $userName) {
@@ -36,7 +37,7 @@ const queryLanguages = `query($userName:String!, $repoCount: Int!) {
     }
   }`;
 
-export async function getNumRepos(userName) {
+export async function getNumRepos(userName: string) {
   const r = await fetch(GITHUB_API, {
     method: "POST",
     headers: {
@@ -50,10 +51,13 @@ export async function getNumRepos(userName) {
     }),
   });
   const data = await r.json();
+  if ("errors" in data) {
+    throw new ErrorHandler(404, "User not found");
+  }
   return data["data"]["user"]["repositories"]["totalCount"];
 }
 
-export async function getLanguages(userName, repoCount) {
+export async function getLanguages(userName: string, repoCount: number) {
   const r = await fetch(GITHUB_API, {
     method: "POST",
     headers: {
@@ -77,13 +81,16 @@ export async function getLanguages(userName, repoCount) {
     });
   });
 
-  const totalBytes = Object.keys(languages).reduce((acc, cur) => {
-    if (typeof acc == "string") {
-      return (acc = languages[acc] + languages[cur]);
-    } else {
-      return (acc += +languages[cur]);
-    }
-  });
+  const totalBytes = Number.parseInt(
+    Object.keys(languages).reduce((acc, cur) => {
+      if (typeof acc == "string") {
+        return (acc = languages[acc] + languages[cur]);
+      } else {
+        return (acc += +languages[cur]);
+      }
+    })
+  );
+
   let result = {};
   Object.keys(languages).forEach((language) => {
     result[language] = {

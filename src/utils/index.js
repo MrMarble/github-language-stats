@@ -1,3 +1,4 @@
+// @flow
 import { createClient } from "redis";
 import { promisify } from "util";
 
@@ -9,7 +10,7 @@ const redisExistsAsync = promisify(redisClient.exists).bind(redisClient);
 
 
 const githubRegex = new RegExp(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i);
-const isValidUser = (userName) => githubRegex.test(userName);
+const isValidUser = (userName: string) => githubRegex.test(userName);
 
 
 const longCache = 60 * 60 * 24;

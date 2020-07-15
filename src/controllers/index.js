@@ -1,3 +1,4 @@
+// @flow
 import { getNumRepos, getLanguages } from "../services";
 import {
   isValidUser,
@@ -6,20 +7,19 @@ import {
   redisClient,
   longCache,
 } from "../utils";
-import { Request, Response } from "express";
 
-/**
- * 
- * @param {Request} req 
- * @param {Response} res 
- * @param {*} next 
- */
-export async function getUserLanguages(req, res, next) {
+import { Request, Response, NextFunction } from "express";
+import { ErrorHandler } from "../helpers/error";
+export async function getUserLanguages(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const userName = req.params.username;
-  if (!isValidUser(userName)) {
-    return res.status(400).send(`${userName} is not a valid Github user`);
-  }
   try {
+    if (!isValidUser(userName)) {
+      throw new ErrorHandler(400, `${userName} is not a valid Github user`);
+    }
     if (await redisExistsAsync(userName)) {
       const data = await redisGetAsync(userName);
       return res.json(JSON.parse(data));
@@ -32,11 +32,11 @@ export async function getUserLanguages(req, res, next) {
       return res.json(languages);
     }
   } catch (error) {
-      console.error(error);
-      next(error);
+    console.error(error);
+    next(error);
   }
 }
 
-export function getRoot(req, res, next) {
-    res.redirect(301, process.env.npm_package_homepage);
+export function getRoot(req: Request, res: Response, next: NextFunction) {
+  res.redirect(301, process.env.npm_package_homepage);
 }

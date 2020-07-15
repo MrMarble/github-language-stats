@@ -1,10 +1,12 @@
+// @flow
 import express from "express";
 import expressRateLimit from "express-rate-limit";
 import expressSlowDown from "express-slow-down";
 import { longCache, shortCache } from "./utils";
 import routes from "./routes";
+import { handleError } from "./helpers/error";
 
-const PORT = 8000
+const PORT = 8000;
 
 const app = express();
 
@@ -27,4 +29,11 @@ const cacheControl = (req, res, next) => {
 app.use(rateLimit, speedLimit, cacheControl);
 app.use(routes);
 
-app.listen(PORT,() => console.info(`Server listening on port ${PORT}. Version ${process.env.npm_package_version}`))
+app.use((err, req, res, next) => {
+  handleError(err, res);
+});
+
+app.listen(PORT, () => {
+  const version = process.env.npm_package_version || "broken";
+  console.info(`Server listening on port ${PORT}. Version ${version}`);
+});
