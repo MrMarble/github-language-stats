@@ -97,4 +97,4 @@ This project uses Flow JS for types, to check if your changes are correct use `n
 
 # CONTRIBUTING
 
-This is a personal proyect, even tho there is linting and type checking,there are no tests what so ever but if you know more javascipt than me or simply want to add or change something, feel free to make a pull request.
+This is a personal project, even tho there is linting and type checking,there are no tests what so ever but if you know more javascipt than me or simply want to add or change something, feel free to make a pull request.
