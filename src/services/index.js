@@ -15,7 +15,7 @@ if (TOKEN == '') {
 
 const queryNumRepos = `query($userName:String!) {
     user(login: $userName) {
-      repositories {
+      repositories(isFork: false) {
         totalCount
       }
     }
@@ -53,7 +53,8 @@ export async function getNumRepos(userName: string) {
         }),
     });
     const data = await r.json();
-    if ('errors' in data) {
+    if ('errors' in data || !('data' in data)) {
+        console.error(data);
         throw new ErrorHandler(404, 'User not found');
     }
     return data['data']['user']['repositories']['totalCount'];
