@@ -3,7 +3,6 @@ README.md
 LICENSE
 .gitignore
 .gitattributes
-.babelrc
 .editorconfig
 .eslintrc.json
 .flowconfig
