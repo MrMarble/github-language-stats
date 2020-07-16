@@ -1,6 +1,6 @@
 {
   "name": "github-language-stats",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Express app that returns the programming languages of a github profile",
   "main": "dist/app.js",
   "scripts": {
