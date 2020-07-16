@@ -53,7 +53,7 @@ ___
  - **format**
    - `json|svg` are the available formats at the moment, use a query parameter: `https://gitlang.mrmarble.dev/mrmarble?format=svg`
  - **background**
-   - Only available for the svg format, it sets the background color, use hex value (encode the # symbol with %23): `https://gitlang.mrmarble.dev/mrmarble?format=svg&%237f3`
+   - Only available for the svg format, it sets the background color, use hex value (encode the # symbol with %23): `https://gitlang.mrmarble.dev/mrmarble?format=svg&background=%237f3`
 
 ### Host your own
  First, you'll need a Github OAuth token, you can get yours at https://github.com/settings/developers.
