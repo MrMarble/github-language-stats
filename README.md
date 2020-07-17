@@ -3,7 +3,7 @@
 
  ## Example
 
- This are the current stats of my profile, the image was generated the moment you visited this site :scream:.
+ These are the current stats of my profile, the image was generated the moment you visited this site :scream:.
 
  ![MrMarble Stats](https://gitlang.mrmarble.dev/mrmarble?format=svg&background=%23eee "MrMarble languages stats")
 
