@@ -21,7 +21,7 @@ type languageJSON = {
     totalBytes: number,
 };
 
-export function parseLanguagesJSON(data: languageQuery) {
+export function parseLanguagesJSON(data: languageQuery, filter: {minpercent: number}) {
     let languages: { [language: string]: {bytes: number, color: string} } = {};
     let parsedLanguages: languageJSON = {};
 
@@ -41,9 +41,14 @@ export function parseLanguagesJSON(data: languageQuery) {
     });
 
     Object.keys(languages).forEach((language) => {
+        const percent = Number.parseFloat(((languages[language].bytes * 100) / totalBytes).toFixed(2));
+        if (percent < filter.minpercent) {
+            totalBytes -= languages[language].bytes;
+            return;
+        }
         parsedLanguages[language] = {
             bytes: languages[language].bytes,
-            percent: Number.parseFloat(((languages[language].bytes * 100) / totalBytes).toFixed(2)),
+            percent,
             color: languages[language].color
         };
     });

@@ -5,7 +5,7 @@
 
  These are the current stats of my profile, the image was generated the moment you visited this site :scream:.
 
- ![MrMarble Stats](https://gitlang.mrmarble.dev/mrmarble?format=svg&background=%23eee "MrMarble languages stats")
+ ![MrMarble Stats](https://gitlang.mrmarble.dev/mrmarble?format=svg&background=%23fff "MrMarble languages stats")
 
 
 In json format (not in real time):
@@ -54,6 +54,8 @@ ___
    - `json|svg` are the available formats at the moment, use a query parameter: `https://gitlang.mrmarble.dev/mrmarble?format=svg`
  - **background**
    - Only available for the svg format, it sets the background color, use hex value (encode the # symbol with %23): `https://gitlang.mrmarble.dev/mrmarble?format=svg&background=%237f3`
+ - **minpercent**
+   - Minimum percent filter. Numeric value (int or float): `http://localhost:8000/mrmarble?format=svg&minpercent=0.5`
 
 ### Host your own
  First, you'll need a Github OAuth token, you can get yours at https://github.com/settings/developers.

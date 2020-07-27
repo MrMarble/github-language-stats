@@ -1,5 +1,7 @@
 // @flow
 
+import { longCache, redisClient, redisExistsAsync, redisGetAsync } from '../utils';
+
 import { ErrorHandler } from '../helpers/error';
 import fetch from 'node-fetch';
 import { parseLanguagesJSON } from '../helpers/utils';
@@ -40,6 +42,10 @@ const queryLanguages = `query($userName:String!, $repoCount: Int!) {
   }`;
 
 export async function getNumRepos(userName: string) {
+    if (await redisExistsAsync(`numrepos:${userName}`)) {
+        return await redisGetAsync(`numrepos:${userName}`);
+    }
+    console.log('getNumRepos: fetching github api',userName);
     const r = await fetch(GITHUB_API, {
         method: 'POST',
         headers: {
@@ -57,10 +63,15 @@ export async function getNumRepos(userName: string) {
         console.error(data);
         throw new ErrorHandler(404, 'User not found');
     }
+    redisClient.set(`numrepos:${userName}`, data['data']['user']['repositories']['totalCount'], 'EX', longCache);
     return data['data']['user']['repositories']['totalCount'];
 }
 
-export async function getLanguages(userName: string, repoCount: number) {
+export async function getLanguages(userName: string, repoCount: number, filter: {minpercent: number}) {
+    if (await redisExistsAsync(`languages:${userName}`)) {
+        return parseLanguagesJSON(JSON.parse(await redisGetAsync(`languages:${userName}`)), filter);
+    }
+    console.log('getLanguages: fetching github api',userName);
     const r = await fetch(GITHUB_API, {
         method: 'POST',
         headers: {
@@ -80,5 +91,6 @@ export async function getLanguages(userName: string, repoCount: number) {
     if (data['data']['user']['repositories']['nodes'].length == 0) {
         throw new ErrorHandler(404, `${userName} does not have any public repositories`);
     }
-    return parseLanguagesJSON(data);
+    redisClient.set(`languages:${userName}`, JSON.stringify(data), 'EX', longCache);
+    return parseLanguagesJSON(data, filter);
 }
