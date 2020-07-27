@@ -49,7 +49,7 @@ ___
  ### Params
 
  - **username**
-   - To query a user simple append the name at the end of the url: `https://gitlang.mrmarble.dev/mrmrable`
+   - To query a user simple append the name at the end of the url: `https://gitlang.mrmarble.dev/mrmarble`
  - **format**
    - `json|svg` are the available formats at the moment, use a query parameter: `https://gitlang.mrmarble.dev/mrmarble?format=svg`
  - **background**
