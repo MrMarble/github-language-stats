@@ -5,7 +5,8 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:flowtype/recommended"
+        "plugin:flowtype/recommended",
+        "prettier"
     ],
     "parser": "babel-eslint",
     "plugins": [
@@ -32,11 +33,17 @@
             "error",
             "always"
         ],
-        "function-call-argument-newline": ["error", "never"],
-        "function-paren-newline": ["error", "never"],
-        "sort-imports":"error",
+        "function-call-argument-newline": [
+            "error",
+            "never"
+        ],
+        "function-paren-newline": [
+            "error",
+            "never"
+        ],
+        "sort-imports": "error",
         "multiline-ternary": [
-            "error", 
+            "error",
             "never"
         ]
     },
